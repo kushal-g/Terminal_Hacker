@@ -5,10 +5,15 @@ using UnityEngine;
 
 public class Hacker : MonoBehaviour
 {
-    enum Screen {MainMenu,Password,Win};
+    //Game configuration
+    readonly string[] level1Password = { "book" ,"aisle","shelf"};
+    readonly string[] level2Password = { "prison", "jail", "crime" };
+    readonly string[] level3Password = { "astronaut", "interstellar", "rocketship" };
+
     //Game State
     int level = 0;
     string password;
+    enum Screen { MainMenu, Password, Win };
     Screen currentScreen = Screen.MainMenu;
 
     // Start is called before the first frame update
@@ -49,13 +54,13 @@ public class Hacker : MonoBehaviour
     {
         switch (input)
         {
-            case "1": password = "book";
+            case "1": password = level1Password[ UnityEngine.Random.Range(0, level1Password.Length)  ];
                 StartGame(int.Parse(input));
                 break;
-            case "2": password = "prison";
+            case "2": password = level2Password[ UnityEngine.Random.Range(0, level2Password.Length) ];
                 StartGame(int.Parse(input));
                 break;
-            case "3": password = "astronaut";
+            case "3": password = level3Password[ UnityEngine.Random.Range(0, level3Password.Length)];
                 StartGame(int.Parse(input));
                 break;
             default:
