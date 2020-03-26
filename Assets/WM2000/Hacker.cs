@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,7 @@ public class Hacker : MonoBehaviour
 
     void ShowStartMenu()
     {
+        level = 0;
         currentScreen = Screen.MainMenu;
         Terminal.ClearScreen();
         Terminal.WriteLine("What would you like to hack into?\n");
@@ -74,10 +76,26 @@ public class Hacker : MonoBehaviour
     {
         level = lvl;
         currentScreen = Screen.Password;
+        Terminal.ClearScreen();
         Terminal.WriteLine("\nYou've selected level " + level);
-        Terminal.WriteLine("Please enter the password: ");
+        Terminal.WriteLine("\nClue:" + Scramble(password));
+        Terminal.WriteLine("\nPlease enter the password: ");
     }
 
+    StringBuilder Scramble(string password)
+    {
+        var jumble = new StringBuilder(password);
+        int length = jumble.Length;
+        var random = new System.Random();
+        for (int i = length - 1; i > 0; i--)
+        {
+            int j = random.Next(i);
+            char temp = jumble[j];
+            jumble[j] = jumble[i];
+            jumble[i] = temp;
+        }
+        return jumble;
+    }
     void CheckPassword(string input){
         if(input == password){
             ShowWinScreen();
@@ -87,11 +105,53 @@ public class Hacker : MonoBehaviour
     }
 
     void ShowWinScreen(){
-        level = 0;
+        
         currentScreen = Screen.Win;
         Terminal.ClearScreen();
-        Terminal.WriteLine("You have succesfully hacked into your destination");
-        Terminal.WriteLine("Type 'menu' to hack into somewhere else");
+        if (level == 1)
+        {
+            
+            Terminal.WriteLine(@"
+        (\ 
+        \'\ 
+         \'\     __________  
+         / '|   ()_________)
+         \ '/    \ ~~~~~~~~ \
+           \       \ ~~~~~~   \
+           ==).      \__________\
+          (__)       ()__________)
+
+"); 
+            Terminal.WriteLine("You've succesfully hacked into the local library");
+        }
+        else if(level == 2)
+        {
+            
+            Terminal.WriteLine(@"
+ _    .----.       .----.
+( )  //--\  \.---./  /--\\
+ T  ((    ) @)   (@ (    ))
+ |   \\__/  /'---'\  \__//
+ |E   '----'       '----'
+");
+
+            Terminal.WriteLine("You've succesfully hacked into the police station");
+        }
+        else if(level == 3)
+        {
+            
+            Terminal.WriteLine(@"
+      /\
+     (  )
+     (  )
+    /|/\|\
+   /_||||_\
+
+");
+            Terminal.WriteLine("You've succesfully hacked into NASA");
+        }
+
+        Terminal.WriteLine("Type 'menu' to hack someone else");
     }
     // Update is called once per frame
     void Update()
